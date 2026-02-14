@@ -75,8 +75,16 @@ def transform_text():
         if not persona:
             return jsonify({"error": "존재하지 않는 페르소나입니다."}), 404
 
-        system_instruction = f"{persona['system']}\n\n[결과 제한]: 오직 변환된 문장만 출력하십시오. 설명, 인사, 따옴표 등 사족은 일절 금지합니다."
-        user_content = persona['user_template'].format(text=text)
+        # [Strict Constraint]: 부연 설명이나 "변환 결과" 같은 안내 문구를 완벽히 차단합니다.
+        system_instruction = (
+            f"{persona['system']}\n\n"
+            "### [규칙: 절대 준수] ###\n"
+            "1. 오직 변환된 결과 문장만 출력하십시오.\n"
+            "2. '관찰 결과', '변환 결과입니다', '말투로 변환합니다' 등 어떠한 설명도 금지합니다.\n"
+            "3. 인사말, 맺음말, 따옴표, 부연 설명을 절대 포함하지 마십시오.\n"
+            "4. 단 한 단어의 사족도 없이 결과물만 즉시 출력하십시오."
+        )
+        user_content = f"문장: {text}\n변환:"
 
         chat_completion = client.chat.completions.create(
             messages=[
