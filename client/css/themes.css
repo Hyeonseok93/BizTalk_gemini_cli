@@ -1,0 +1,102 @@
+/* Chameleon UI - Persona Themes Definitions (Soft, Muted & Readable Version) */
+:root {
+    /* Base Colors */
+    --base-bg: #121212;
+    --portal-blue: #4A90E2;
+    --theme-bg: var(--base-bg);
+    --theme-text: #ffffff;
+    --panel-bg: rgba(255, 255, 255, 0.05);
+    --persona-font: 'Pretendard', sans-serif;
+}
+
+/* P01: 조선 선비 - 고전적이고 가독성 높은 바탕체 */
+[data-theme="P01"] {
+    --theme-bg: #F8F5E4;
+    --theme-text: #3D405B;
+    --panel-bg: rgba(0, 0, 0, 0.03);
+    --portal-blue: #A5A58D;
+    --persona-font: 'Gowun Batang', serif;
+}
+
+/* P02: 느와르 마피아 - 가독성 끝판왕 타자기체 */
+[data-theme="P02"] {
+    --theme-bg: #2D2D2D;
+    --theme-text: #E0E0E0;
+    --panel-bg: rgba(255, 255, 255, 0.02);
+    --portal-blue: #6B705C;
+    --persona-font: 'Courier Prime', monospace;
+}
+
+/* P03: 고대 철학자 - 차분하고 품격 있는 명조체 */
+[data-theme="P03"] {
+    --theme-bg: #F4EED7;
+    --theme-text: #444444;
+    --panel-bg: rgba(0, 0, 0, 0.05);
+    --portal-blue: #B7B7A4;
+    --persona-font: 'Noto Serif KR', serif;
+}
+
+/* P04: 서부 보안관 - 거칠지만 명확한 서체 */
+[data-theme="P04"] {
+    --theme-bg: #D4A373;
+    --theme-text: #333333;
+    --panel-bg: rgba(0, 0, 0, 0.06);
+    --portal-blue: #A98467;
+    --persona-font: 'Courier Prime', monospace;
+    font-weight: bold;
+}
+
+/* P05: 영국 탐정 - 클래식하고 세련된 서체 */
+[data-theme="P05"] {
+    --theme-bg: #4A4E69;
+    --theme-text: #F2E9E4;
+    --panel-bg: rgba(255, 255, 255, 0.08);
+    --portal-blue: #9A8C98;
+    --persona-font: 'Libre Baskerville', serif;
+}
+
+/* P06: 츤데레 교수 - 깔끔하고 이성적인 고딕체 */
+[data-theme="P06"] {
+    --theme-bg: #9A8C98;
+    --theme-text: #F2E9E4;
+    --panel-bg: rgba(0, 0, 0, 0.05);
+    --portal-blue: #4A4E69;
+    --persona-font: 'Noto Sans KR', sans-serif;
+}
+
+/* P07: 까칠한 드래곤 - 날카롭고 무게감 있는 서체 */
+[data-theme="P07"] {
+    --theme-bg: #B5838D;
+    --theme-text: #FFE5D9;
+    --panel-bg: rgba(0, 0, 0, 0.1);
+    --portal-blue: #6D597A;
+    --persona-font: 'Noto Serif KR', serif;
+    font-weight: 700;
+}
+
+/* P08: 욕쟁이 할머니 - 정겹고 친근한 돋움체 */
+[data-theme="P08"] {
+    --theme-bg: #FFE5B4;
+    --theme-text: #5D5D5D;
+    --panel-bg: rgba(255, 255, 255, 0.1);
+    --portal-blue: #FFB4A2;
+    --persona-font: 'Gowun Dodum', sans-serif;
+}
+
+/* P09: 군대 조교 - 절도 있고 힘 있는 서체 */
+[data-theme="P09"] {
+    --theme-bg: #A3B18A;
+    --theme-text: #344E41;
+    --panel-bg: rgba(255, 255, 255, 0.05);
+    --portal-blue: #588157;
+    --persona-font: 'Black Han Sans', sans-serif;
+}
+
+/* P10: 긍정 리포터 - 밝고 경쾌한 돋움체 */
+[data-theme="P10"] {
+    --theme-bg: #FFADAD;
+    --theme-text: #555555;
+    --panel-bg: rgba(255, 255, 255, 0.15);
+    --portal-blue: #FF8B94;
+    --persona-font: 'Gowun Dodum', sans-serif;
+}

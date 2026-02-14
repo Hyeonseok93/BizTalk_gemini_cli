@@ -10,29 +10,17 @@ class ThemeEngine {
     applyTheme(persona) {
         console.log(`Applying theme: ${persona.name}`);
         
-        // CSS Variables 교체
-        this.root.style.setProperty('--theme-bg', persona.color);
+        // 1. 차원 전이 글리치 효과 트리거
+        this.triggerGlitchEffect();
+
+        // 2. data-theme 속성 변경 (themes.css의 변수들이 즉시 적용됨)
+        document.body.dataset.theme = persona.id;
+        
+        // 3. 개별 변수 보정 (필요 시)
         this.root.style.setProperty('--persona-font', persona.font);
         
-        // 텍스트 가독성을 위한 배경색에 따른 글자색 자동 조정 (단순화)
-        const isDark = this.isColorDark(persona.color);
-        this.root.style.setProperty('--theme-text', isDark ? '#ffffff' : '#121212');
-        
-        // 글리치 효과 트리거 (0.3초)
-        this.triggerGlitchEffect();
-    }
-
-    /**
-     * 배경색의 밝기를 판단하여 글자색 결정
-     * @param {string} hex 
-     */
-    isColorDark(hex) {
-        if (!hex || hex.length < 6) return true;
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-        return brightness < 128;
+        // 4. 가독성을 위한 텍스트 색상 보정은 이제 CSS에서 처리되지만, 
+        // 추가적인 JS 로직이 필요할 경우 여기서 수행
     }
 
     /**
@@ -40,7 +28,10 @@ class ThemeEngine {
      */
     triggerGlitchEffect() {
         const body = document.body;
+        body.classList.remove('glitching');
+        void body.offsetWidth; // Force reflow
         body.classList.add('glitching');
+        
         setTimeout(() => {
             body.classList.remove('glitching');
         }, 300);

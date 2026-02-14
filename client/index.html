@@ -4,31 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Persona Switcher | Chameleon UI</title>
+    <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/animations.css">
-    <!-- 기본 폰트 Pretendard -->
+    <!-- 기본 및 페르소나 폰트 로드 -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Courier+Prime:wght@400;700&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@300;400;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --base-bg: #121212;
-            --portal-blue: #4A90E2;
-            --success-neon: #50E3C2;
-            --error-glitch: #FF0055;
-        }
-
         body {
             margin: 0;
             padding: 0;
-            background-color: var(--theme-bg, var(--base-bg));
-            color: var(--theme-text, #ffffff);
+            background-color: var(--theme-bg);
+            color: var(--theme-text);
             font-family: 'Pretendard', sans-serif;
             transition: background-color 0.5s ease, color 0.5s ease;
             overflow-x: hidden;
+            background-size: cover;
+            background-attachment: fixed;
         }
 
         #app {
             display: flex;
             flex-direction: column;
             height: 100vh;
+            position: relative;
+            z-index: 1;
         }
 
         /* Mask Selector */
@@ -37,8 +36,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 100;
         }
@@ -48,8 +47,9 @@
             gap: 15px;
             padding: 10px;
             overflow-x: auto;
-            max-width: 90vw;
+            max-width: 95vw;
             scrollbar-width: thin;
+            perspective: 1000px; /* 3D 효과를 위한 원근법 */
         }
 
         .mask-container::-webkit-scrollbar {
@@ -67,20 +67,20 @@
             align-items: center;
             gap: 8px;
             min-width: 80px;
+            cursor: pointer;
         }
 
         .mask-item {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             background: #333;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
+            font-size: 22px;
             border: 2px solid transparent;
+            transform-style: preserve-3d;
         }
 
         .mask-name {
@@ -88,11 +88,7 @@
             opacity: 0.8;
             text-align: center;
             white-space: nowrap;
-        }
-
-        .mask-item:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px var(--portal-blue);
+            transition: all 0.3s ease;
         }
 
         .mask-item.active {
@@ -111,26 +107,31 @@
         main {
             flex: 1;
             display: flex;
-            padding: 20px;
-            gap: 20px;
+            padding: 30px;
+            gap: 30px;
         }
 
         .panel {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s ease;
         }
 
         .panel-header {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            opacity: 0.7;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            opacity: 0.6;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         textarea {
@@ -139,54 +140,72 @@
             background: transparent;
             border: none;
             color: inherit;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             resize: none;
             outline: none;
             font-family: inherit;
+            line-height: 1.6;
         }
 
         .output-area {
             font-family: var(--persona-font, inherit);
-            font-size: 1.5rem;
-            line-height: 1.6;
+            font-size: 1.4rem;
+            line-height: 1.7;
             white-space: pre-wrap;
+            transition: font-family 0.5s ease;
         }
 
         /* Controls */
         .controls {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         button {
             background: var(--portal-blue);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
-            transition: opacity 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         button:hover {
-            opacity: 0.8;
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .char-counter {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            bottom: 25px;
+            left: 25px;
+            font-size: 0.85rem;
+            opacity: 0.4;
         }
 
         @media (max-width: 768px) {
             main {
                 flex-direction: column;
+            }
+            header {
+                height: 100px;
             }
         }
 
@@ -372,8 +391,9 @@
                         selectedPersonaId = p.id;
                         themeEngine.applyTheme(p);
                         
-                        // 출력 패널 헤더 업데이트
+                        // 출력 패널 헤더 업데이트 및 기존 결과 리셋
                         document.querySelector('#output-panel .panel-header').innerText = `${p.name} (Persona)`;
+                        personaOutput.innerText = '문장을 입력하고 차원 이동 버튼을 눌러주세요.';
                     };
                     
                     wrapper.appendChild(el);

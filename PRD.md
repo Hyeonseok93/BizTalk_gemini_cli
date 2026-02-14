@@ -171,9 +171,11 @@
 
 ### 2단계: Chameleon UI 및 테마 엔진 개발 (완료 목표: Sprint 2)
 - **주요 내용**:
+  - server/app.py에 정적인 페이지 라우팅 로직을 추가
   - Dynamic Theme Engine(DTE) 구현 및 10종 페르소나 시그니처 컬러/폰트 정의.
   - Interactive Mask Selector 개발 (호버 시 3D 회전 효과 및 사운드 통합).
   - Glitch Portal 전환 애니메이션 및 Dual Panel 반응형 레이아웃 구축.
+  - 백앤드 API와의 비동기 통신 로직 구현 (Fetch 함수 사용)
 
 ### 3단계: 시각적 구체화 및 몰입 요소 구현 (완료 목표: Sprint 3)
 - **주요 내용**:

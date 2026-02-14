@@ -8,12 +8,17 @@ from persona_manager import PersonaManager
 # 환경 변수 로드
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../client', static_url_path='')
 CORS(app)  # 프론트엔드 통신 허용
 
 # Groq 클라이언트 초기화
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 persona_manager = PersonaManager()
+
+@app.route('/')
+def index():
+    """메인 페이지 서빙"""
+    return app.send_static_file('index.html')
 
 @app.route('/api/v1/personas', methods=['GET'])
 def get_personas():

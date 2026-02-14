@@ -1,45 +1,47 @@
-/* Glitch Effect */
-@keyframes glitch {
-    0% {
-        transform: translate(0);
-        clip-path: inset(0 0 0 0);
-    }
-    20% {
-        transform: translate(-5px, 5px);
-        clip-path: inset(10% 0 30% 0);
-    }
-    40% {
-        transform: translate(5px, -5px);
-        clip-path: inset(40% 0 10% 0);
-    }
-    60% {
-        transform: translate(-5px, 0);
-        clip-path: inset(20% 0 50% 0);
-    }
-    80% {
-        transform: translate(5px, 5px);
-        clip-path: inset(60% 0 5% 0);
-    }
-    100% {
-        transform: translate(0);
-        clip-path: inset(0 0 0 0);
-    }
+/* Chameleon UI Animations */
+
+/* Glitch Portal Transition Effect */
+@keyframes portal-glitch {
+    0% { transform: translate(0); clip-path: inset(0 0 0 0); filter: hue-rotate(0deg); }
+    20% { transform: translate(-5px, 5px); clip-path: inset(10% 0 30% 0); filter: hue-rotate(90deg); }
+    40% { transform: translate(5px, -5px); clip-path: inset(40% 0 10% 0); filter: hue-rotate(180deg); }
+    60% { transform: translate(-10px, 2px); clip-path: inset(20% 0 50% 0); filter: hue-rotate(270deg); }
+    80% { transform: translate(10px, -2px); clip-path: inset(60% 0 5% 0); filter: hue-rotate(360deg); }
+    100% { transform: translate(0); clip-path: inset(0 0 0 0); filter: hue-rotate(0deg); }
 }
 
 .glitching {
-    animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-    filter: hue-rotate(90deg) contrast(1.5);
-}
-
-/* Character Specific Animations (Placeholders) */
-.typing-effect {
-    border-right: 2px solid var(--theme-text);
-    white-space: nowrap;
+    animation: portal-glitch 0.3s cubic-bezier(.25, .46, .45, .94) both;
+    position: relative;
     overflow: hidden;
-    animation: typing 2s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: var(--theme-text); }
+.glitching::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 2px);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Mask Item Hover Effects */
+.mask-item {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                box-shadow 0.3s ease, 
+                border-color 0.3s ease;
+}
+
+.mask-wrapper:hover .mask-item {
+    transform: scale(1.15) rotateY(180deg); /* 3D 회전 효과 */
+}
+
+/* Text Appear Animation */
+@keyframes text-slide-in {
+    from { opacity: 0; transform: translateY(10px); filter: blur(5px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.output-area {
+    animation: text-slide-in 0.5s ease-out forwards;
 }
