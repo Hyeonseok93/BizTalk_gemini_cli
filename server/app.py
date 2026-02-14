@@ -5,7 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from groq import Groq
 
-# 경로 설정
+# 절대 경로 설정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CLIENT_DIR = os.path.join(os.path.dirname(BASE_DIR), 'client')
 
@@ -59,32 +59,27 @@ def transform_text():
         if not persona:
             return jsonify({"error": "존재하지 않는 페르소나입니다."}), 404
 
-        # [생성형 AI의 강점을 극대화하는 몰입형 프롬프트]
+        # 비즈니스 변환을 위한 엄격한 시스템 지침
         system_instruction = (
-            f"너는 지금부터 '{persona['name']}' 그 자체가 되어야 한다.\n"
-            f"성격 및 말투 가이드: {persona['system']}\n\n"
-            "### [미션] ###\n"
-            "1. 입력된 문장의 '의미'와 '의도'를 파악해라.\n"
-            "2. 그 의미를 유지한 채, 네가 정한 캐릭터의 말투로 완전히 새롭게 창작해서 말해라.\n"
-            "3. 만약 입력이 '질문'이라면, 사용자의 질문에 대답(Answer)하지 말고, 네 캐릭터가 그 질문을 스스로에게 혹은 세상에 던지는 식으로 '재진술(Rephrase)'해라.\n"
-            "4. 절대 대화하지 마라. 오직 변환된 캐릭터의 독백 혹은 선언만 출력해라.\n"
-            "5. 따옴표, 머릿말, 설명은 일절 생략하고 오직 결과 문장만 내뱉어라."
+            f"{persona['system']}\n\n"
+            "### [작업 규칙] ###\n"
+            "1. 입력된 내용을 바탕으로 비즈니스 상황에 적합한 문장으로 완전히 재작성하십시오.\n"
+            "2. 절대로 사용자의 말에 대답하거나 사견을 덧붙이지 마십시오.\n"
+            "3. 변환된 결과물 외에 어떠한 부연 설명이나 따옴표도 출력하지 마십시오."
         )
 
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": f"입력된 원문: {text}\n너의 캐릭터로 변환된 문장:"}
+                {"role": "user", "content": persona['user_template'].format(text=text)}
             ],
             model="llama-3.1-8b-instant", 
-            temperature=0.8,  # 창의성 복구: 매번 조금씩 다른 생생한 답변 생성
-            max_tokens=300
+            temperature=0.3, # 비즈니스 어투의 일관성을 위해 낮은 온도 유지
+            max_tokens=500
         )
 
         transformed_text = chat_completion.choices[0].message.content.strip()
-        
-        # 안전장치: 불필요한 따옴표 제거
-        transformed_text = transformed_text.replace("\"", "").replace("'", "").strip()
+        transformed_text = transformed_text.replace("\"", "").strip()
 
         return jsonify({
             "persona_id": persona_id,
