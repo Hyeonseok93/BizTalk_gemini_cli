@@ -59,24 +59,25 @@ def transform_text():
         if not persona:
             return jsonify({"error": "존재하지 않는 페르소나입니다."}), 404
 
-        # [질문 대답 원천 차단 프롬프트]
+        # [최종 수정된 스타일 가이드 적용 프롬프트]
         system_instruction = (
-            "TASK: PARAPHRASE ONLY (STYLE MAPPING)\n"
-            f"TARGET STYLE: {persona['name']} ({persona['system']})\n\n"
-            "### [CRITICAL RULE: DO NOT ANSWER] ###\n"
-            "1. 입력된 문장이 '질문'이더라도 절대 대답하지 마십시오.\n"
-            "2. 입력된 질문 문장 그 자체를 목표 페르소나의 말투로 '다시 쓰기'만 하십시오.\n"
-            "3. 주어와 의도를 그대로 유지하십시오. (예: '나는 천재인가?' -> '내가 진정 천재인지 의문이 드는구려')\n"
-            "4. 인사, 설명, 따옴표 없이 오직 변환된 결과만 출력하십시오."
+            "당신은 문체 변환기입니다. 주어진 문장의 의미는 그대로 유지하되, 아래 [스타일 가이드]에 맞춰 말투만 바꾸십시오.\n\n"
+            "### [스타일 가이드] ###\n"
+            f"{persona['system']}\n\n"
+            "### [절대 규칙] ###\n"
+            "1. 문장의 주어와 내용은 변경하지 마십시오.\n"
+            "2. 대화하거나 질문에 답하지 마십시오.\n"
+            "3. 입력된 문장을 위 스타일로 '다시 쓰기'만 하십시오.\n"
+            "4. 사족 없이 변환된 문장 하나만 출력하십시오."
         )
 
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": f"DATA TO REPHRASE: [{text}]"}
+                {"role": "user", "content": f"입력 문장: [{text}]\n변환 결과:"}
             ],
             model="llama-3.1-8b-instant", 
-            temperature=0,
+            temperature=0.7, # 창의성을 위해 온도 약간 상승
             max_tokens=300
         )
 
