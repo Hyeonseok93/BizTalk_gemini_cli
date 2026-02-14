@@ -8,7 +8,8 @@ from persona_manager import PersonaManager
 # 환경 변수 로드
 load_dotenv()
 
-app = Flask(__name__)
+# Vercel에서는 static_folder가 무시되지만, 로컬 테스트를 위해 설정 유지
+app = Flask(__name__, static_folder='../client', static_url_path='')
 CORS(app)
 
 # API 키 확인 (Vercel 배포 시 환경 변수 설정 필요)
@@ -18,6 +19,11 @@ if api_key:
     client = Groq(api_key=api_key)
 
 persona_manager = PersonaManager()
+
+@app.route('/')
+def index():
+    """메인 페이지 서빙 (로컬 테스트용)"""
+    return app.send_static_file('index.html')
 
 @app.route('/api/v1/personas', methods=['GET'])
 def get_personas():
@@ -54,14 +60,12 @@ def transform_text():
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": user_content}
             ],
-            model="meta-llama/llama-4-scout-17b-16e-instruct", # 지능이 더 높은 70B 모델 사용
-            temperature=0,                  # 랜덤성 제로 (가장 기계적인 답변)
+            model="meta-llama/llama-4-scout-17b-16e-instruct", 
+            temperature=0,                  
             max_tokens=300
         )
 
         transformed_text = chat_completion.choices[0].message.content.strip()
-        
-        # 불필요한 "출력:" 혹은 따옴표 제거 (안전장치)
         transformed_text = transformed_text.replace("출력:", "").replace("\"", "").strip()
 
         return jsonify({

@@ -1,9 +1,18 @@
 class ApiClient {
     constructor() {
-        // 현재 호스트가 localhost나 127.0.0.1이면 Flask 서버(5000포트)를 사용하고,
-        // 아니면(Vercel 등 배포 환경) 현재 도메인의 상대 경로를 사용합니다.
-        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        this.baseUrl = isLocal ? 'http://localhost:5000/api/v1' : '/api/v1';
+        const hostname = window.location.hostname;
+        const protocol = window.location.protocol;
+        
+        // 1. 배포 환경 (Vercel 등)
+        if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+            this.baseUrl = '/api/v1';
+        } 
+        // 2. 로컬 환경 (파일 직접 열기 또는 localhost 서버)
+        else {
+            this.baseUrl = 'http://localhost:5000/api/v1';
+        }
+        
+        console.log(`ApiClient initialized with baseUrl: ${this.baseUrl}`);
     }
 
     /**
