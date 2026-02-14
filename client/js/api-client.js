@@ -9,10 +9,14 @@ class ApiClient {
     async getPersonas() {
         try {
             const response = await fetch(`${this.baseUrl}/personas`);
-            if (!response.ok) throw new Error('Failed to fetch personas');
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`API Error (${response.status}):`, errorText);
+                throw new Error(`Failed to fetch personas: ${response.status}`);
+            }
             return await response.json();
         } catch (error) {
-            console.error('Error fetching personas:', error);
+            console.error('Network or Parse Error fetching personas:', error);
             throw error;
         }
     }
