@@ -4,31 +4,28 @@ class ThemeEngine {
     }
 
     /**
-     * 페르소나 정보를 바탕으로 테마 적용
-     * @param {Object} persona 
+     * 선택된 통신 모드에 따라 테마 적용
+     * @param {Object} mode 
      */
-    applyTheme(persona) {
-        console.log(`Applying theme: ${persona.name}`);
+    applyTheme(mode) {
+        console.log(`Switching to mode: ${mode.name}`);
         
-        // 1. 차원 전이 글리치 효과 트리거
-        this.triggerGlitchEffect();
+        // 1. 시각적 전환 효과 트리거
+        this.triggerTransitionEffect();
 
-        // 2. data-theme 속성 변경 (themes.css의 변수들이 즉시 적용됨)
-        document.body.dataset.theme = persona.id;
+        // 2. data-theme 속성 변경 (themes.css의 변수 적용)
+        document.body.dataset.theme = mode.id;
         
-        // 3. 개별 변수 보정 (필요 시)
-        this.root.style.setProperty('--persona-font', persona.font);
-        
-        // 4. 가독성을 위한 텍스트 색상 보정은 이제 CSS에서 처리되지만, 
-        // 추가적인 JS 로직이 필요할 경우 여기서 수행
+        // 3. 폰트 등 세부 스타일 보정
+        this.root.style.setProperty('--persona-font', mode.font || 'Pretendard');
     }
 
     /**
-     * 테마 전환 시 Glitch 효과 노출
+     * 모드 전환 시 부드러운 트랜지션 효과
      */
-    triggerGlitchEffect() {
+    triggerTransitionEffect() {
         const body = document.body;
-        body.classList.remove('glitching');
+        body.classList.remove('glitching'); // 기존 애니메이션 클래스 재활용 가능
         void body.offsetWidth; // Force reflow
         body.classList.add('glitching');
         

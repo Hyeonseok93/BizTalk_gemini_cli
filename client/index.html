@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persona Switcher | Chameleon UI</title>
+    <title>BizTalk Optimizer | 비즈니스 어투 변환 솔루션</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Courier+Prime:wght@400;700&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@300;400;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -16,7 +15,7 @@
                 extend: {
                     colors: {
                         portal: {
-                            blue: '#4A90E2',
+                            blue: '#3498DB',
                         }
                     },
                     fontFamily: {
@@ -38,7 +37,7 @@
                 @apply w-14 h-14 rounded-full flex items-center justify-center text-2xl border-2 border-transparent transition-all duration-300;
             }
             .persona-icon.active {
-                @apply border-portal-blue scale-110 shadow-[0_0_20px_rgba(74,144,226,0.5)];
+                @apply border-portal-blue scale-110 shadow-[0_0_20px_rgba(52,152,219,0.3)];
             }
             .action-btn {
                 @apply bg-portal-blue hover:bg-portal-blue/80 text-white px-6 py-3 rounded-xl font-bold transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-portal-blue/20;
@@ -46,10 +45,10 @@
         }
         
         body {
-            background-color: var(--theme-bg, #0f172a);
+            background-color: var(--theme-bg, #1a202c);
             color: var(--theme-text, #f8fafc);
-            background-image: radial-gradient(circle at top right, rgba(74,144,226,0.1), transparent),
-                              radial-gradient(circle at bottom left, rgba(74,144,226,0.05), transparent);
+            background-image: radial-gradient(circle at top right, rgba(52,152,219,0.05), transparent),
+                              radial-gradient(circle at bottom left, rgba(52,152,219,0.03), transparent);
             background-attachment: fixed;
         }
 
@@ -60,10 +59,10 @@
 </head>
 <body class="min-h-screen font-sans transition-colors duration-500">
     <div id="app" class="flex flex-col h-screen">
-        <!-- Header / Persona Selector -->
-        <header class="h-32 flex items-center justify-center bg-black/40 backdrop-blur-2xl border-b border-white/5 z-50">
-            <div class="mask-container flex gap-6 px-6 overflow-x-auto max-w-[95vw] no-scrollbar scroll-smooth py-2" id="mask-selector">
-                <!-- Personas injected here -->
+        <!-- Header / Mode Selector -->
+        <header class="h-32 flex items-center justify-center bg-black/20 backdrop-blur-2xl border-b border-white/5 z-50">
+            <div class="mask-container flex gap-10 px-6 overflow-x-auto max-w-[95vw] no-scrollbar scroll-smooth py-2" id="mask-selector">
+                <!-- Modes injected here -->
             </div>
         </header>
 
@@ -71,27 +70,27 @@
             <!-- Left: Input Panel -->
             <section class="flex-1 glass-panel p-8 relative flex flex-col group overflow-hidden">
                 <!-- Selection Overlay -->
-                <div id="selection-overlay" class="absolute inset-0 z-10 bg-black/60 backdrop-blur-md flex flex-col items-center justify-center text-center p-6 transition-all duration-500">
-                    <div class="w-16 h-16 bg-portal-blue/20 rounded-full flex items-center justify-center mb-4 animate-bounce">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-portal-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                <div id="selection-overlay" class="absolute inset-0 z-10 bg-black/40 backdrop-blur-md flex flex-col items-center justify-center text-center p-6 transition-all duration-500">
+                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2">인격 선택 필요</h3>
-                    <p class="text-white/60 text-sm leading-relaxed">상단의 가면을 클릭하여<br>빙의할 인격을 먼저 결정해 주세요.</p>
+                    <h3 class="text-xl font-bold text-white mb-2">변환 모드 선택 필요</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">상단의 버튼을 클릭하여<br>적용할 비즈니스 커뮤니케이션 모드를 선택하세요.</p>
                 </div>
 
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xs uppercase tracking-[0.2em] font-bold text-white/40">일상의 나 (Normal)</h2>
-                    <div class="text-[10px] text-white/20 font-mono"><span id="current-chars">0</span> / 500</div>
+                    <h2 class="text-xs uppercase tracking-[0.2em] font-bold text-white/40">초안 작성 (Draft)</h2>
+                    <div class="text-[10px] text-white/20 font-mono"><span id="current-chars">0</span> / 1000</div>
                 </div>
                 <textarea id="user-input" 
                     class="flex-1 bg-transparent border-none text-white text-xl md:text-2xl placeholder:text-white/10 resize-none outline-none leading-relaxed" 
-                    placeholder="여기에 변환할 문장을 입력하세요..." 
-                    maxlength="500"></textarea>
+                    placeholder="변환하고 싶은 내용을 입력하세요..." 
+                    maxlength="1000"></textarea>
                 <div class="mt-6 flex justify-end">
                     <button id="transform-btn" class="action-btn flex items-center gap-2">
-                        <span>차원 이동 (Transform)</span>
+                        <span>문구 최적화 (Optimize)</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
@@ -102,18 +101,18 @@
             <!-- Right: Output Panel -->
             <section class="flex-1 glass-panel p-8 relative flex flex-col bg-white/[0.02]">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 id="output-header" class="text-xs uppercase tracking-[0.2em] font-bold text-white/40">변신한 인격 (Persona)</h2>
+                    <h2 id="output-header" class="text-xs uppercase tracking-[0.2em] font-bold text-white/40">변환 결과 (Result)</h2>
                     <div class="h-2 w-2 rounded-full bg-portal-blue animate-pulse"></div>
                 </div>
                 <div id="persona-output" class="flex-1 text-white text-2xl md:text-3xl leading-relaxed overflow-y-auto whitespace-pre-wrap persona-output-text">
-                    <span class="text-white/20 italic text-xl">인격을 선택하고 문장을 입력하면 이곳에 결과가 나타납니다.</span>
+                    <span class="text-white/20 italic text-xl">모드를 선택하고 문구를 입력하면 최적화된 결과가 이곳에 나타납니다.</span>
                 </div>
                 <div class="mt-6 flex justify-end">
                     <button id="copy-btn" class="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-xl font-bold transition-all duration-300 flex items-center gap-2 border border-white/5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                         </svg>
-                        <span>복사</span>
+                        <span>복사하기</span>
                     </button>
                 </div>
             </section>
@@ -122,16 +121,16 @@
 
     <!-- Modals & Toasts -->
     <div id="modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
-        <div class="bg-[#1e1e1e] border border-portal-blue/50 rounded-3xl p-8 max-w-sm w-full text-center shadow-[0_0_50px_rgba(74,144,226,0.2)] transform scale-90 transition-transform duration-300">
-            <span class="text-6xl mb-6 block">🌀</span>
-            <h3 class="text-2xl font-bold text-portal-blue mb-4">차원 전이 경고</h3>
-            <p id="modal-message" class="text-white/70 mb-8 leading-relaxed">먼저 상단의 가면을 선택하여 인격을 결정해 주세요!</p>
-            <button id="modal-close-btn" class="w-full action-btn">시스템 확인</button>
+        <div class="bg-[#1e1e1e] border border-white/10 rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl transform scale-90 transition-transform duration-300">
+            <span class="text-6xl mb-6 block">ℹ️</span>
+            <h3 class="text-2xl font-bold text-white mb-4">안내</h3>
+            <p id="modal-message" class="text-white/70 mb-8 leading-relaxed">먼저 상단의 버튼을 선택하여 변환 모드를 결정해 주세요.</p>
+            <button id="modal-close-btn" class="w-full action-btn">확인</button>
         </div>
     </div>
 
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] bg-portal-blue text-white px-8 py-4 rounded-full font-bold shadow-2xl shadow-portal-blue/40 transform translate-y-24 opacity-0 transition-all duration-500">
-        메시지가 복사되었습니다.
+        클립보드에 복사되었습니다.
     </div>
 
     <script src="js/api-client.js"></script>
@@ -182,39 +181,33 @@
                     
                     const icon = document.createElement('div');
                     icon.className = 'persona-icon';
-                    icon.innerText = '🎭';
+                    // 비즈니스 느낌 아이콘 (임시)
+                    icon.innerText = p.id === 'Upward' ? '👔' : p.id === 'Lateral' ? '🤝' : '💬';
                     icon.style.backgroundColor = p.color;
                     icon.title = p.description;
                     
                     const name = document.createElement('div');
-                    name.className = 'text-[10px] font-bold text-white/40 uppercase tracking-widest transition-colors';
-                    name.innerText = p.name;
+                    name.className = 'text-[11px] font-bold text-white/40 uppercase tracking-wider transition-colors';
+                    name.innerText = p.name.split(' ')[0]; // 이름 앞부분만 표시
                     
                     wrapper.onclick = () => {
-                        // 오버레이 숨기기
                         const overlay = document.getElementById('selection-overlay');
                         if (overlay) {
                             overlay.classList.add('opacity-0', 'pointer-events-none');
                             setTimeout(() => overlay.remove(), 500);
                         }
 
-                        // 모든 아이콘에서 active 클래스 제거 (애니메이션 초기화)
-                        document.querySelectorAll('.persona-icon').forEach(m => {
-                            m.classList.remove('active');
-                            // 강제 리플로우로 애니메이션 재시작 준비
-                            void m.offsetWidth;
-                        });
+                        document.querySelectorAll('.persona-icon').forEach(m => m.classList.remove('active'));
                         document.querySelectorAll('.persona-btn div:last-child').forEach(n => n.classList.replace('text-portal-blue', 'text-white/40'));
                         
-                        // 현재 클릭한 아이콘에 active 클래스 추가
                         icon.classList.add('active');
                         name.classList.replace('text-white/40', 'text-portal-blue');
                         
                         selectedPersonaId = p.id;
                         themeEngine.applyTheme(p);
                         
-                        outputHeader.innerText = `${p.name} (Persona)`;
-                        personaOutput.innerHTML = '<span class="text-white/20 italic text-xl">문장을 입력하고 차원 이동 버튼을 눌러주세요.</span>';
+                        outputHeader.innerText = `${p.name} 결과`;
+                        personaOutput.innerHTML = '<span class="text-white/20 italic text-xl">문구를 입력하고 최적화 버튼을 눌러주세요.</span>';
                     };
                     
                     wrapper.appendChild(icon);
@@ -222,7 +215,7 @@
                     maskSelector.appendChild(wrapper);
                 });
             } catch (err) {
-                personaOutput.innerText = '차원 통신 장애: 페르소나 목록을 불러올 수 없습니다.';
+                personaOutput.innerText = '시스템 오류: 데이터를 불러올 수 없습니다.';
             }
 
             userInput.addEventListener('input', () => {
@@ -233,24 +226,24 @@
                 const text = userInput.value.trim();
                 
                 if (!selectedPersonaId) {
-                    showModal('먼저 상단의 가면을 선택하여 인격을 결정해 주세요!');
+                    showModal('적용할 비즈니스 모드를 먼저 선택해 주세요.');
                     return;
                 }
                 if (!text) {
-                    showModal('차원 전이를 위한 문장을 입력해 주세요.');
+                    showModal('최적화할 문구를 입력해 주세요.');
                     return;
                 }
 
                 transformBtn.disabled = true;
                 const originalBtnText = transformBtn.innerHTML;
-                transformBtn.innerHTML = '<span>차원 이동 중...</span><div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
-                personaOutput.innerHTML = '<div class="flex flex-col items-center justify-center h-full gap-4 text-white/40"><div class="w-12 h-12 border-4 border-white/5 border-t-portal-blue rounded-full animate-spin"></div><div class="animate-pulse">인격 빙의 중... 잠시만 기다려 주십시오.</div></div>';
+                transformBtn.innerHTML = '<span>최적화 중...</span><div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+                personaOutput.innerHTML = '<div class="flex flex-col items-center justify-center h-full gap-4 text-white/40"><div class="w-12 h-12 border-4 border-white/5 border-t-portal-blue rounded-full animate-spin"></div><div class="animate-pulse">비즈니스 문구 최적화 중...</div></div>';
 
                 try {
                     const result = await api.transformText(selectedPersonaId, text);
                     personaOutput.innerText = result.transformed_text;
                 } catch (err) {
-                    personaOutput.innerHTML = `<span class="text-red-400 font-mono text-lg">[차원 통신 오류] ${err.message}</span>`;
+                    personaOutput.innerHTML = `<span class="text-red-400 font-mono text-lg">[오류 발생] ${err.message}</span>`;
                 } finally {
                     transformBtn.disabled = false;
                     transformBtn.innerHTML = originalBtnText;
@@ -262,7 +255,7 @@
                 if (!text || personaOutput.querySelector('span')) return;
                 
                 navigator.clipboard.writeText(text).then(() => {
-                    showToast('인격의 어투가 클립보드에 복사되었습니다.');
+                    showToast('문구가 복사되었습니다.');
                 });
             });
         });
