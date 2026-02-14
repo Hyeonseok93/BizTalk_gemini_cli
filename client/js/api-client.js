@@ -1,5 +1,5 @@
 class ApiClient {
-    constructor(baseUrl = 'http://localhost:5000/api/v1') {
+    constructor(baseUrl = '/api/v1') {
         this.baseUrl = baseUrl;
     }
 
