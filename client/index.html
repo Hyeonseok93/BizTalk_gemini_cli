@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persona Switcher | Chameleon UI</title>
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- 기본 폰트 Pretendard -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        :root {
+            --base-bg: #121212;
+            --portal-blue: #4A90E2;
+            --success-neon: #50E3C2;
+            --error-glitch: #FF0055;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--theme-bg, var(--base-bg));
+            color: var(--theme-text, #ffffff);
+            font-family: 'Pretendard', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Mask Selector */
+        header {
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+
+        .mask-container {
+            display: flex;
+            gap: 15px;
+            padding: 10px;
+            overflow-x: auto;
+            max-width: 90vw;
+            scrollbar-width: thin;
+        }
+
+        .mask-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .mask-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .mask-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 80px;
+        }
+
+        .mask-item {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            border: 2px solid transparent;
+        }
+
+        .mask-name {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .mask-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--portal-blue);
+        }
+
+        .mask-item.active {
+            border-color: var(--portal-blue);
+            box-shadow: 0 0 20px var(--portal-blue);
+            transform: scale(1.1);
+        }
+
+        .mask-item.active + .mask-name {
+            opacity: 1;
+            font-weight: bold;
+            color: var(--portal-blue);
+        }
+
+        /* Dual Panel Layout */
+        main {
+            flex: 1;
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            opacity: 0.7;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            color: inherit;
+            font-size: 1.1rem;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .output-area {
+            font-family: var(--persona-font, inherit);
+            font-size: 1.5rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        /* Controls */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background: var(--portal-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .char-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                flex-direction: column;
+            }
+        }
+
+        /* Custom Modal & Toast */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid var(--portal-blue);
+            box-shadow: 0 0 30px rgba(74, 144, 226, 0.3);
+            text-align: center;
+            max-width: 400px;
+            transform: scale(0.8);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--portal-blue);
+            font-weight: bold;
+        }
+
+        .modal-text {
+            line-height: 1.5;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--portal-blue);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 2000;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.active {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="mask-container" id="mask-selector">
+                <!-- 페르소나 마스크 아이콘들이 동적으로 생성됨 -->
+            </div>
+        </header>
+
+        <main>
+            <!-- Left: Normal Input -->
+            <section class="panel" id="input-panel">
+                <div class="panel-header">일상의 나 (Normal)</div>
+                <textarea id="user-input" placeholder="여기에 변환할 문장을 입력하세요..." maxlength="500"></textarea>
+                <div class="char-counter"><span id="current-chars">0</span>/500</div>
+                <div class="controls">
+                    <button id="transform-btn">차원 이동 (Transform)</button>
+                </div>
+            </section>
+
+            <!-- Right: Persona Output -->
+            <section class="panel" id="output-panel">
+                <div class="panel-header">변신한 인격 (Persona)</div>
+                <div id="persona-output" class="output-area">인격을 선택하고 문장을 입력하면 이곳에 결과가 나타납니다.</div>
+                <div class="controls">
+                    <button id="copy-btn">복사</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Custom UI Elements -->
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-icon">🌀</span>
+            <div class="modal-title">차원 전이 경고</div>
+            <div class="modal-text" id="modal-message">먼저 상단의 가면을 선택하여 인격을 결정해 주세요!</div>
+            <button id="modal-close-btn">시스템 확인</button>
+        </div>
+    </div>
+    <div id="toast" class="toast">메시지가 복사되었습니다.</div>
+
+    <!-- Scripts -->
+    <script src="js/api-client.js"></script>
+    <script src="js/theme-engine.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const api = new ApiClient();
+            const themeEngine = new ThemeEngine();
+            let selectedPersonaId = null;
+            
+            const maskSelector = document.getElementById('mask-selector');
+            const userInput = document.getElementById('user-input');
+            const charCounter = document.getElementById('current-chars');
+            const personaOutput = document.getElementById('persona-output');
+            const transformBtn = document.getElementById('transform-btn');
+            
+            const modal = document.getElementById('modal');
+            const modalMessage = document.getElementById('modal-message');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const toast = document.getElementById('toast');
+
+            // UI Helper Functions
+            const showModal = (msg) => {
+                modalMessage.innerText = msg;
+                modal.classList.add('active');
+            };
+
+            const hideModal = () => {
+                modal.classList.remove('active');
+            };
+
+            const showToast = (msg) => {
+                toast.innerText = msg;
+                toast.classList.add('active');
+                setTimeout(() => toast.classList.remove('active'), 2500);
+            };
+
+            modalCloseBtn.onclick = hideModal;
+            modal.onclick = (e) => { if(e.target === modal) hideModal(); };
+
+            // 1. 페르소나 목록 로드 및 UI 생성
+            try {
+                const personas = await api.getPersonas();
+                
+                personas.forEach(p => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'mask-wrapper';
+                    
+                    const el = document.createElement('div');
+                    el.className = 'mask-item';
+                    el.innerText = '🎭'; 
+                    el.title = p.description;
+                    el.style.backgroundColor = p.color; // 각 페르소나 고유색 적용
+                    
+                    const name = document.createElement('div');
+                    name.className = 'mask-name';
+                    name.innerText = p.name;
+                    
+                    wrapper.onclick = () => {
+                        document.querySelectorAll('.mask-item').forEach(m => m.classList.remove('active'));
+                        el.classList.add('active');
+                        selectedPersonaId = p.id;
+                        themeEngine.applyTheme(p);
+                        
+                        // 출력 패널 헤더 업데이트
+                        document.querySelector('#output-panel .panel-header').innerText = `${p.name} (Persona)`;
+                    };
+                    
+                    wrapper.appendChild(el);
+                    wrapper.appendChild(name);
+                    maskSelector.appendChild(wrapper);
+                });
+            } catch (err) {
+                personaOutput.innerText = '차원 통신 장애: 페르소나 목록을 불러올 수 없습니다.';
+            }
+
+            // 2. 글자 수 카운터
+            userInput.addEventListener('input', () => {
+                charCounter.innerText = userInput.value.length;
+            });
+
+            // 3. 변환 실행
+            transformBtn.addEventListener('click', async () => {
+                const text = userInput.value.trim();
+                
+                if (!selectedPersonaId) {
+                    showModal('먼저 상단의 가면을 선택하여 인격을 결정해 주세요!');
+                    return;
+                }
+                if (!text) {
+                    showModal('차원 전이를 위한 문장을 입력해 주세요.');
+                    return;
+                }
+
+                transformBtn.disabled = true;
+                transformBtn.innerText = '차원 이동 중...';
+                personaOutput.innerText = '인격 빙의 중... 잠시만 기다려 주십시오.';
+
+                try {
+                    const result = await api.transformText(selectedPersonaId, text);
+                    personaOutput.innerText = result.transformed_text;
+                } catch (err) {
+                    personaOutput.innerText = `[차원 통신 오류] ${err.message}`;
+                } finally {
+                    transformBtn.disabled = false;
+                    transformBtn.innerText = '차원 이동 (Transform)';
+                }
+            });
+
+            // 4. 복사 기능
+            document.getElementById('copy-btn').addEventListener('click', () => {
+                const text = personaOutput.innerText;
+                if (!text || text === '인격을 선택하고 문장을 입력하면 이곳에 결과가 나타납니다.') return;
+                
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('인격의 어투가 클립보드에 복사되었습니다.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
