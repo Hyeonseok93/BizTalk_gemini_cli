@@ -5,7 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from groq import Groq
 
-# 절대 경로 설정
+# 경로 설정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CLIENT_DIR = os.path.join(os.path.dirname(BASE_DIR), 'client')
 
@@ -59,28 +59,21 @@ def transform_text():
         if not persona:
             return jsonify({"error": "존재하지 않는 페르소나입니다."}), 404
 
-        # [프로토콜 기반 프롬프트]: AI가 대화할 여지를 없애버림
+        # [질문 대답 원천 차단 프롬프트]
         system_instruction = (
-            "TASK: STYLE TRANSFORMATION\n"
-            f"TARGET PERSONA: {persona['name']}\n"
-            f"STYLE GUIDE: {persona['system']}\n"
-            "CONSTRAINT: \n"
-            "- Do not reply to the input. \n"
-            "- Do not evaluate the input. \n"
-            "- Only rewrite the input text as if the TARGET PERSONA is the one speaking it. \n"
-            "- Output ONLY the rewritten text without any quotes, headers, or explanations."
-        )
-
-        # 사용자의 말을 '데이터'로 격리
-        task_prompt = (
-            f"INPUT_DATA: [{text}]\n"
-            f"REWRITE_AS_{persona_id}:"
+            "TASK: PARAPHRASE ONLY (STYLE MAPPING)\n"
+            f"TARGET STYLE: {persona['name']} ({persona['system']})\n\n"
+            "### [CRITICAL RULE: DO NOT ANSWER] ###\n"
+            "1. 입력된 문장이 '질문'이더라도 절대 대답하지 마십시오.\n"
+            "2. 입력된 질문 문장 그 자체를 목표 페르소나의 말투로 '다시 쓰기'만 하십시오.\n"
+            "3. 주어와 의도를 그대로 유지하십시오. (예: '나는 천재인가?' -> '내가 진정 천재인지 의문이 드는구려')\n"
+            "4. 인사, 설명, 따옴표 없이 오직 변환된 결과만 출력하십시오."
         )
 
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": task_prompt}
+                {"role": "user", "content": f"DATA TO REPHRASE: [{text}]"}
             ],
             model="llama-3.1-8b-instant", 
             temperature=0,
@@ -89,10 +82,9 @@ def transform_text():
 
         transformed_text = chat_completion.choices[0].message.content.strip()
         
-        # 안전장치: 혹시라도 붙을 수 있는 머릿말 강제 제거
-        for prefix in ["REWRITE:", "OUTPUT:", "변환:", "결과:"]:
-            if transformed_text.upper().startswith(prefix):
-                transformed_text = transformed_text[len(prefix):].strip()
+        # 머릿말 제거 안전장치
+        if ":" in transformed_text and len(transformed_text.split(":")[0]) < 20:
+            transformed_text = transformed_text.split(":", 1)[1].strip()
 
         return jsonify({
             "persona_id": persona_id,
