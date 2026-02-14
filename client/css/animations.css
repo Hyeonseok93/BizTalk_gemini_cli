@@ -25,15 +25,21 @@
     z-index: 9999;
 }
 
-/* Mask Item Hover Effects */
-.mask-item {
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+/* Persona Icon 3D Effects */
+.persona-icon {
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
                 box-shadow 0.3s ease, 
                 border-color 0.3s ease;
+    transform-style: preserve-3d;
 }
 
-.mask-wrapper:hover .mask-item {
-    transform: scale(1.15) rotateY(180deg); /* 3D 회전 효과 */
+.persona-btn:hover .persona-icon {
+    transform: rotateY(180deg) scale(1.1);
+}
+
+.persona-icon.active {
+    /* 선택 시에는 뒤집히지 않고 크기와 강조 효과만 유지 */
+    transform: scale(1.15);
 }
 
 /* Text Appear Animation */
@@ -42,6 +48,6 @@
     to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
-.output-area {
+.persona-output-text {
     animation: text-slide-in 0.5s ease-out forwards;
 }

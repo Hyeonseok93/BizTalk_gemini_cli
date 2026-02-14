@@ -1,102 +1,90 @@
-/* Chameleon UI - Persona Themes Definitions (Soft, Muted & Readable Version) */
+/* Chameleon UI - Persona Themes (Sophisticated & Modern Version) */
 :root {
-    /* Base Colors */
-    --base-bg: #121212;
-    --portal-blue: #4A90E2;
+    /* Base Colors - Dark Default */
+    --base-bg: #0f172a;
+    --portal-blue: #3b82f6;
     --theme-bg: var(--base-bg);
-    --theme-text: #ffffff;
-    --panel-bg: rgba(255, 255, 255, 0.05);
+    --theme-text: #f1f5f9;
+    --panel-bg: rgba(255, 255, 255, 0.03);
     --persona-font: 'Pretendard', sans-serif;
 }
 
-/* P01: 조선 선비 - 고전적이고 가독성 높은 바탕체 */
+/* P01: 조선 선비 - 고전적인 미학 (Sepia & Ink) */
 [data-theme="P01"] {
-    --theme-bg: #F8F5E4;
-    --theme-text: #3D405B;
-    --panel-bg: rgba(0, 0, 0, 0.03);
-    --portal-blue: #A5A58D;
+    --theme-bg: #1a1915;
+    --theme-text: #e2e2d5;
+    --portal-blue: #8b8b7a;
     --persona-font: 'Gowun Batang', serif;
 }
 
-/* P02: 느와르 마피아 - 가독성 끝판왕 타자기체 */
+/* P02: 느와르 마피아 - 차갑고 어두운 도시 (Cold Slate) */
 [data-theme="P02"] {
-    --theme-bg: #2D2D2D;
-    --theme-text: #E0E0E0;
-    --panel-bg: rgba(255, 255, 255, 0.02);
-    --portal-blue: #6B705C;
+    --theme-bg: #0a0a0a;
+    --theme-text: #d1d5db;
+    --portal-blue: #4b5563;
     --persona-font: 'Courier Prime', monospace;
 }
 
-/* P03: 고대 철학자 - 차분하고 품격 있는 명조체 */
+/* P03: 고대 철학자 - 양장본 종이의 느낌 (Parchment Dark) */
 [data-theme="P03"] {
-    --theme-bg: #F4EED7;
-    --theme-text: #444444;
-    --panel-bg: rgba(0, 0, 0, 0.05);
-    --portal-blue: #B7B7A4;
+    --theme-bg: #1c1b17;
+    --theme-text: #d4d4c8;
+    --portal-blue: #928374;
     --persona-font: 'Noto Serif KR', serif;
 }
 
-/* P04: 서부 보안관 - 거칠지만 명확한 서체 */
+/* P04: 서부 보안관 - 먼지 쌓인 황야 (Dusty Canyon) */
 [data-theme="P04"] {
-    --theme-bg: #D4A373;
-    --theme-text: #333333;
-    --panel-bg: rgba(0, 0, 0, 0.06);
-    --portal-blue: #A98467;
+    --theme-bg: #1a1412;
+    --theme-text: #d6ccc2;
+    --portal-blue: #a37b5d;
     --persona-font: 'Courier Prime', monospace;
-    font-weight: bold;
 }
 
-/* P05: 영국 탐정 - 클래식하고 세련된 서체 */
+/* P05: 영국 탐정 - 깊은 밤의 서재 (Deep Navy) */
 [data-theme="P05"] {
-    --theme-bg: #4A4E69;
-    --theme-text: #F2E9E4;
-    --panel-bg: rgba(255, 255, 255, 0.08);
-    --portal-blue: #9A8C98;
+    --theme-bg: #0f172a;
+    --theme-text: #e2e8f0;
+    --portal-blue: #64748b;
     --persona-font: 'Libre Baskerville', serif;
 }
 
-/* P06: 츤데레 교수 - 깔끔하고 이성적인 고딕체 */
+/* P06: 츤데레 교수 - 냉철한 지성 (Minimal Grey) */
 [data-theme="P06"] {
-    --theme-bg: #9A8C98;
-    --theme-text: #F2E9E4;
-    --panel-bg: rgba(0, 0, 0, 0.05);
-    --portal-blue: #4A4E69;
+    --theme-bg: #18181b;
+    --theme-text: #e4e4e7;
+    --portal-blue: #71717a;
     --persona-font: 'Noto Sans KR', sans-serif;
 }
 
-/* P07: 까칠한 드래곤 - 날카롭고 무게감 있는 서체 */
+/* P07: 까칠한 드래곤 - 고대의 동굴 (Obsidian Purple) */
 [data-theme="P07"] {
-    --theme-bg: #B5838D;
-    --theme-text: #FFE5D9;
-    --panel-bg: rgba(0, 0, 0, 0.1);
-    --portal-blue: #6D597A;
+    --theme-bg: #18121a;
+    --theme-text: #f5f3f7;
+    --portal-blue: #86198f;
     --persona-font: 'Noto Serif KR', serif;
-    font-weight: 700;
 }
 
-/* P08: 욕쟁이 할머니 - 정겹고 친근한 돋움체 */
+/* P08: 욕쟁이 할머니 - 따뜻한 아랫목 (Warm Earth) */
 [data-theme="P08"] {
-    --theme-bg: #FFE5B4;
-    --theme-text: #5D5D5D;
-    --panel-bg: rgba(255, 255, 255, 0.1);
-    --portal-blue: #FFB4A2;
+    --theme-bg: #1c1917;
+    --theme-text: #f5f5f4;
+    --portal-blue: #d97706;
     --persona-font: 'Gowun Dodum', sans-serif;
 }
 
-/* P09: 군대 조교 - 절도 있고 힘 있는 서체 */
+/* P09: 군대 조교 - 위장색 (Tactical Olive) */
 [data-theme="P09"] {
-    --theme-bg: #A3B18A;
-    --theme-text: #344E41;
-    --panel-bg: rgba(255, 255, 255, 0.05);
-    --portal-blue: #588157;
+    --theme-bg: #141712;
+    --theme-text: #dcfce7;
+    --portal-blue: #166534;
     --persona-font: 'Black Han Sans', sans-serif;
 }
 
-/* P10: 긍정 리포터 - 밝고 경쾌한 돋움체 */
+/* P10: 긍정 리포터 - 활기찬 스튜디오 (Electric Blue) */
 [data-theme="P10"] {
-    --theme-bg: #FFADAD;
-    --theme-text: #555555;
-    --panel-bg: rgba(255, 255, 255, 0.15);
-    --portal-blue: #FF8B94;
+    --theme-bg: #080a12;
+    --theme-text: #eff6ff;
+    --portal-blue: #2563eb;
     --persona-font: 'Gowun Dodum', sans-serif;
 }
