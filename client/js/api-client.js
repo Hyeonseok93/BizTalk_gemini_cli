@@ -1,6 +1,9 @@
 class ApiClient {
-    constructor(baseUrl = '/api/v1') {
-        this.baseUrl = baseUrl;
+    constructor() {
+        // 현재 호스트가 localhost나 127.0.0.1이면 Flask 서버(5000포트)를 사용하고,
+        // 아니면(Vercel 등 배포 환경) 현재 도메인의 상대 경로를 사용합니다.
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        this.baseUrl = isLocal ? 'http://localhost:5000/api/v1' : '/api/v1';
     }
 
     /**
@@ -8,6 +11,7 @@ class ApiClient {
      */
     async getPersonas() {
         try {
+            console.log(`Fetching personas from: ${this.baseUrl}/personas`);
             const response = await fetch(`${this.baseUrl}/personas`);
             if (!response.ok) {
                 const errorText = await response.text();
