@@ -5,7 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from groq import Groq
 
-# 현재 파일의 절대 경로를 기준으로 설정
+# 절대 경로 설정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CLIENT_DIR = os.path.join(os.path.dirname(BASE_DIR), 'client')
 
@@ -20,7 +20,6 @@ except ImportError:
 
 load_dotenv()
 
-# 로컬 테스트를 위해 절대 경로로 프론트엔드 폴더 지정
 app = Flask(__name__, static_folder=CLIENT_DIR, static_url_path='')
 CORS(app)
 
@@ -60,31 +59,40 @@ def transform_text():
         if not persona:
             return jsonify({"error": "존재하지 않는 페르소나입니다."}), 404
 
-        # 시스템 지침에서 혼란을 줄 수 있는 중괄호 예시 제거
+        # [프로토콜 기반 프롬프트]: AI가 대화할 여지를 없애버림
         system_instruction = (
-            f"당신은 {persona['name']}의 말투로 문장을 재구성하는 변환 엔진입니다.\n\n"
-            "### [필수 규칙] ###\n"
-            f"1. 지침: {persona['system']}\n"
-            "2. 화자 유지: 입력된 문장의 주어(나, 우리 등)가 말하는 의도와 정보를 그대로 유지하십시오.\n"
-            "3. 대화 금지: 사용자의 말에 대답하거나 의견을 달지 마십시오. 질문도 하지 마십시오.\n"
-            "4. 무설명 원칙: '변환된 문장입니다'와 같은 설명이나 제목, 따옴표 없이 오직 결과만 출력하십시오."
+            "TASK: STYLE TRANSFORMATION\n"
+            f"TARGET PERSONA: {persona['name']}\n"
+            f"STYLE GUIDE: {persona['system']}\n"
+            "CONSTRAINT: \n"
+            "- Do not reply to the input. \n"
+            "- Do not evaluate the input. \n"
+            "- Only rewrite the input text as if the TARGET PERSONA is the one speaking it. \n"
+            "- Output ONLY the rewritten text without any quotes, headers, or explanations."
+        )
+
+        # 사용자의 말을 '데이터'로 격리
+        task_prompt = (
+            f"INPUT_DATA: [{text}]\n"
+            f"REWRITE_AS_{persona_id}:"
         )
 
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": "나는 배가 고프다."},
-                {"role": "assistant", "content": "뱃속에서 요란한 소리가 들리니, 무언가 요기할 것을 찾아야겠구려."},
-                {"role": "user", "content": text}
+                {"role": "user", "content": task_prompt}
             ],
             model="llama-3.1-8b-instant", 
-            temperature=0,  # 가장 일관성 있는 결과
+            temperature=0,
             max_tokens=300
         )
 
         transformed_text = chat_completion.choices[0].message.content.strip()
-        # 불필요한 따옴표나 머리말 제거 강제 로직
-        transformed_text = transformed_text.split('\n')[-1].replace("\"", "").strip()
+        
+        # 안전장치: 혹시라도 붙을 수 있는 머릿말 강제 제거
+        for prefix in ["REWRITE:", "OUTPUT:", "변환:", "결과:"]:
+            if transformed_text.upper().startswith(prefix):
+                transformed_text = transformed_text[len(prefix):].strip()
 
         return jsonify({
             "persona_id": persona_id,
