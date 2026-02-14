@@ -10,14 +10,26 @@
       "use": "@vercel/static"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "/server/app.py"
+      "src": "/api/(.*)",
+      "dest": "server/app.py"
     },
     {
-      "source": "/(.*)",
-      "destination": "/client/$1"
+      "src": "/css/(.*)",
+      "dest": "/client/css/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/client/js/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/client/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/client/index.html"
     }
   ]
 }
