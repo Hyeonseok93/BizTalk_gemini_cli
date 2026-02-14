@@ -8,16 +8,16 @@ from persona_manager import PersonaManager
 # 환경 변수 로드
 load_dotenv()
 
-app = Flask(__name__, static_folder='../client', static_url_path='')
+app = Flask(__name__)
 CORS(app)
 
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-persona_manager = PersonaManager()
+# API 키 확인 (Vercel 배포 시 환경 변수 설정 필요)
+api_key = os.environ.get("GROQ_API_KEY")
+client = None
+if api_key:
+    client = Groq(api_key=api_key)
 
-@app.route('/')
-def index():
-    """메인 페이지 서빙"""
-    return app.send_static_file('index.html')
+persona_manager = PersonaManager()
 
 @app.route('/api/v1/personas', methods=['GET'])
 def get_personas():
@@ -30,6 +30,9 @@ def get_personas():
 @app.route('/api/v1/transform', methods=['POST'])
 def transform_text():
     """텍스트 변환 실행"""
+    if not client:
+        return jsonify({"error": "GROQ_API_KEY가 설정되지 않았습니다."}), 500
+
     data = request.json
     persona_id = data.get('persona_id')
     text = data.get('text')
