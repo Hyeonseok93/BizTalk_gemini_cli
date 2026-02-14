@@ -5,7 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from groq import Groq
 
-# 경로 설정
+# 절대 경로 설정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CLIENT_DIR = os.path.join(os.path.dirname(BASE_DIR), 'client')
 
@@ -59,33 +59,30 @@ def transform_text():
         if not persona:
             return jsonify({"error": "존재하지 않는 페르소나입니다."}), 404
 
-        # [최종 수정된 스타일 가이드 적용 프롬프트]
+        # [AI를 기계로 취급하는 프롬프트]
         system_instruction = (
-            "당신은 문체 변환기입니다. 주어진 문장의 의미는 그대로 유지하되, 아래 [스타일 가이드]에 맞춰 말투만 바꾸십시오.\n\n"
-            "### [스타일 가이드] ###\n"
-            f"{persona['system']}\n\n"
-            "### [절대 규칙] ###\n"
-            "1. 문장의 주어와 내용은 변경하지 마십시오.\n"
-            "2. 대화하거나 질문에 답하지 마십시오.\n"
-            "3. 입력된 문장을 위 스타일로 '다시 쓰기'만 하십시오.\n"
-            "4. 사족 없이 변환된 문장 하나만 출력하십시오."
+            "You are a 'Style Transfer Engine'. Your only job is to rewrite the input text into a specific style.\n\n"
+            "### RULES ###\n"
+            "1. KEEP THE MEANING: The original meaning and the speaker's intent MUST be preserved. Do not change facts or opinions.\n"
+            "2. DO NOT RESPOND: Do not answer questions. Do not give advice. Do not comment on the input.\n"
+            "3. NO HEADERS: Do not include labels like 'Rewritten:', 'Result:', or quotes.\n"
+            f"4. TARGET STYLE GUIDE: {persona['system']}"
         )
 
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": f"입력 문장: [{text}]\n변환 결과:"}
+                {"role": "user", "content": f"Input Text: {text}\nOutput:"}
             ],
             model="llama-3.1-8b-instant", 
-            temperature=0.7, # 창의성을 위해 온도 약간 상승
+            temperature=0,  # 무조건 가장 논리적이고 일관된 결과만 출력
             max_tokens=300
         )
 
         transformed_text = chat_completion.choices[0].message.content.strip()
         
-        # 머릿말 제거 안전장치
-        if ":" in transformed_text and len(transformed_text.split(":")[0]) < 20:
-            transformed_text = transformed_text.split(":", 1)[1].strip()
+        # 따옴표 제거 (안전장치)
+        transformed_text = transformed_text.replace("\"", "").strip()
 
         return jsonify({
             "persona_id": persona_id,

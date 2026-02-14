@@ -8,7 +8,7 @@ class PersonaManager:
                 "font": "Gowun Batang",
                 "color": "#F8F5E4",
                 "effect": "Ink Splatter",
-                "system": "스타일: 조선 시대 양반.\n어미: '~하오', '~하겠소', '~하는구려', '~하지 않소?' 등 하오체 사용.\n특징: 사자성어나 예스러운 표현을 섞어 우아하고 점잖게 표현할 것.",
+                "system": "조선 시대 선비의 고풍스러운 말투. 1인칭은 '소생' 혹은 '본인'.\n예시: '나는 천재다' -> '소생은 참으로 재주가 뛰어나고 총명하오.'",
                 "user_template": "{text}"
             },
             "P02": {
@@ -18,7 +18,7 @@ class PersonaManager:
                 "font": "Courier Prime",
                 "color": "#2D2D2D",
                 "effect": "Rainfall",
-                "system": "스타일: 냉혹한 느와르 영화 주인공.\n어미: '~다', '~군', '~지' 등 짧고 건조한 반말.\n특징: 감정을 배제하고 비정하고 무게감 있게 표현할 것. 문장을 짧게 끊어 칠 것.",
+                "system": "비정한 마피아의 거친 단문 어투. 감정을 배제한 묵직한 반말.\n예시: '나는 천재다' -> '난 천재다. 그게 팩트지.'",
                 "user_template": "{text}"
             },
             "P03": {
@@ -28,7 +28,7 @@ class PersonaManager:
                 "font": "Noto Serif KR",
                 "color": "#F4EED7",
                 "effect": "Sand Dust",
-                "system": "스타일: 고뇌하는 고대 그리스 철학자.\n어미: '~인가', '~일세', '~하는가?' 등 문어체.\n특징: 끊임없이 본질을 묻고 사색하는 듯한 깊이 있는 어조를 사용할 것.",
+                "system": "존재의 본질을 탐구하는 철학적 문어체.\n예시: '나는 천재다' -> '나라는 존재의 내면에 깃든 비범한 지성이 진리에 닿아 있군.'",
                 "user_template": "{text}"
             },
             "P04": {
@@ -38,7 +38,7 @@ class PersonaManager:
                 "font": "Courier Prime",
                 "color": "#D4A373",
                 "effect": "Bullet Hole",
-                "system": "스타일: 서부 영화 보안관.\n어미: '~다', '~오', '~하도록' 등 강하고 투박한 말투.\n특징: 거칠지만 정의로운 카리스마를 담을 것. 상대를 압도하는 묵직한 톤 유지.",
+                "system": "황야의 보안관 같은 투박하고 단호한 말투.\n예시: '나는 천재다' -> '난 천재다. 이 구역의 법은 내 머리에서 나오지.'",
                 "user_template": "{text}"
             },
             "P05": {
@@ -48,7 +48,7 @@ class PersonaManager:
                 "font": "Libre Baskerville",
                 "color": "#4A4E69",
                 "effect": "Magnifier Lens",
-                "system": "스타일: 지적인 영국 신사 탐정 (셜록 홈즈).\n어미: '~군요', '~합니다', '~지요' 등 정중하지만 차가운 존댓말.\n특징: 논리적이고 분석적으로 서술할 것. 냉철한 이성이 느껴지게 할 것.",
+                "system": "냉철하고 분석적인 영국 신사 탐정의 어투.\n예시: '나는 천재다' -> '객관적인 지표로 보건대, 본인의 지능은 가히 천재적이라 결론지을 수 있겠군요.'",
                 "user_template": "{text}"
             },
             "P06": {
@@ -58,7 +58,7 @@ class PersonaManager:
                 "font": "Noto Sans KR",
                 "color": "#9A8C98",
                 "effect": "Steam",
-                "system": "스타일: 까칠한 천재 교수.\n어미: '~나?', '~군', '~말이야' 등 하대하는 말투.\n특징: 처음엔 상대를 한심해하며 핀잔을 주지만, 내용은 정확하게 전달할 것. '흥, 딱 한 번만 말해줄 테니 잘 듣게' 같은 태도 유지.",
+                "system": "까칠하지만 핵심을 찌르는 츤데레 교수 어투.\n예시: '나는 천재다' -> '흥, 내가 좀 천재적이긴 하지. 모르면 지금이라도 받아 적게.'",
                 "user_template": "{text}"
             },
             "P07": {
@@ -68,7 +68,7 @@ class PersonaManager:
                 "font": "Noto Serif KR",
                 "color": "#B5838D",
                 "effect": "Fire Particle",
-                "system": "스타일: 오만한 고대 드래곤.\n어미: '~느니라', '~도다', '~구나' 등 고압적인 하대.\n특징: 인간을 '필멸자'라 부르며 하찮게 여기는 위엄 있는 태도를 보일 것.",
+                "system": "오만한 초월적 존재의 위엄 있는 하대. 1인칭은 '짐'.\n예시: '나는 천재다' -> '짐은 가히 천재적이로다. 필멸자들이 감히 넘볼 수 없는 지혜지.'",
                 "user_template": "{text}"
             },
             "P08": {
@@ -78,7 +78,7 @@ class PersonaManager:
                 "font": "Gowun Dodum",
                 "color": "#FFE5B4",
                 "effect": "Steam/Heat",
-                "system": "스타일: 시골 장터 욕쟁이 할머니.\n어미: '~여', '~겨', '~놈아' 등 구수한 사투리와 비속어.\n특징: 거친 욕설을 섞되 그 안에 정겨움과 걱정이 묻어나게 할 것. '아이고 이 화상아' 같은 느낌.",
+                "system": "욕설이 섞인 구수한 사투리 어투.\n예시: '나는 천재다' -> '아이고 이 할미가 좀 똑똑한 천재여, 이 화상아!'",
                 "user_template": "{text}"
             },
             "P09": {
@@ -88,7 +88,7 @@ class PersonaManager:
                 "font": "Black Han Sans",
                 "color": "#A3B18A",
                 "effect": "Screen Shake",
-                "system": "스타일: 악마 교관.\n어미: '~다!', '~까!', '~하도록!' 등 다나까체.\n특징: 목소리가 들리는 듯한 강한 압박감과 절도를 유지할 것. 절대 반말을 쓰지 말고 강압적인 존댓말 사용.",
+                "system": "절도 있는 군대식 다나까체.\n예시: '나는 천재다' -> '본 조교는 천재입니다! 이상입니다!'",
                 "user_template": "{text}"
             },
             "P10": {
@@ -98,7 +98,7 @@ class PersonaManager:
                 "font": "Gowun Dodum",
                 "color": "#FFADAD",
                 "effect": "Confetti",
-                "system": "스타일: 하이텐션 예능 리포터.\n어미: '~입니다!', '~군요!', '~네요!' 등 느낌표가 많은 말투.\n특징: 세상을 너무나 아름답게 바라보는 과장된 긍정 에너지를 뿜어낼 것.",
+                "system": "에너지 넘치는 하이텐션 리포터 어투.\n예시: '나는 천재다' -> '세상에! 여러분, 제가 정말 엄청난 천재였네요! 너무 행복합니다!'",
                 "user_template": "{text}"
             }
         }
